@@ -23,6 +23,7 @@
 		
 		$conn = mysqli_connect("localhost","root","","create_class_task");	
 		
+		$i=0;
 		foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name)
 		{
 			$uploadThisFile = true;
@@ -44,15 +45,17 @@
 			}
 			
 			if($uploadThisFile){
-				$filename=basename($file_name,$ext);
-				$newFileName=$filename.$ext;				
+				// $filename=basename($file_name,$ext);
+				$filename=strval($name).strval($i);
+				$newFileName=$filename.".".$ext;				
 				move_uploaded_file($_FILES["files"]["tmp_name"][$key],"Upload/".$newFileName);
 				
 				$query = "INSERT INTO task(Name,Team_Name,Phone_number,Mentor_Name,FilePath,FileName) VALUES('".$name."','".$Tname."','".$phone."','".$Mname."','Upload','".$newFileName."')";
-				
+				echo $filename;
 				echo "uploaded";
 				mysqli_query($conn, $query);			
 			}
+			$i++;
 		}
 		
 		mysqli_close($conn);
